@@ -1,0 +1,23 @@
+.full-image {
+    margin-bottom: 15px;
+}
+
+.btnlink {
+    color: black;
+}
+
+.btnlink:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.del-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}

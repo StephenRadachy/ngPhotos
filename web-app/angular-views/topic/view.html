@@ -1,0 +1,32 @@
+<div ng-controller="viewPhotosController" ng-hide="isOnline" class="container">
+    <div class="row">
+        <div class="col-xs-12"><h1>{{topicName}}</h1></div>
+
+        <div class="col-xs-12">
+            <div style="margin-top: 25px;">
+                <a class="btnlink" ng-href="topic#/addPhotos/{{topicID}}">
+                    <button class="btn-sm btn">Add Photos</button>
+                </a>
+                <a class="btnlink" ng-href="topic#/edit/{{topicID}}">
+                    <button class="btn-sm btn">Edit Topic</button>
+                </a>
+                <a class="btnlink" ng-click="deleteTopic()">
+                    <button class="btn-sm btn btn-danger">Delete Topic</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div ng-repeat="photo in topic" class="col-xs-12">
+            <div class="image-container">
+                <img class="full-image" src="{{photo.content}}">
+                <a ng-click="deletePhoto(photo.id)">
+                    <button class="del-image pull-right btn btn-xs btn-danger">Delete</button>
+                </a>
+            </div> <!-- image container -->
+        </div> <!-- col span -->
+    </div>
+
+</div>
