@@ -7,7 +7,9 @@
             </div>
             <div class="form-group">
                 <label for="photos">Photos</label>
-                <input type="file" accept = "image/*" file-model="myFile" base-sixty-four-input/>
+                <form>
+                    <input type="file" accept="image/*" ng-model="myFile" multiple base-sixty-four-input/>
+                </form>
                 <p class="help-block">Uploading photos is optional</p>
             </div>
             <button ng-click="create()">Create</button>

@@ -26,8 +26,10 @@
         $( document ).ready(function() {
             if (online){
                 $(".grails").show();
+                $(".angular").hide();
             } else {
                 $(".grails").hide();
+                $(".angular").show();
             }
         });
         </script>

@@ -1,13 +1,13 @@
-<div ng-controller="viewPhotosController" ng-hide="isOnline" class="container">
+<div ng-controller="viewController" ng-hide="isOnline" class="container">
     <div class="row">
         <div class="col-xs-12"><h1>{{topicName}}</h1></div>
 
         <div class="col-xs-12">
             <div style="margin-top: 25px;">
-                <a class="btnlink" ng-href="topic#/addPhotos/{{topicID}}">
+                <a class="btnlink" ng-href="#/addPhotos/{{topicID}}">
                     <button class="btn-sm btn">Add Photos</button>
                 </a>
-                <a class="btnlink" ng-href="topic#/edit/{{topicID}}">
+                <a class="btnlink" ng-href="#/edit/{{topicID}}">
                     <button class="btn-sm btn">Edit Topic</button>
                 </a>
                 <a class="btnlink" ng-click="deleteTopic()">
@@ -19,9 +19,9 @@
     <br>
 
     <div class="row">
-        <div ng-repeat="photo in topic" class="col-xs-12">
+        <div ng-repeat="photo in photos" class="col-xs-12">
             <div class="image-container">
-                <img class="full-image" src="{{photo.content}}">
+                <img class="full-image" ng-src="data:{{photo.filetype}};base64,{{photo.content}}">
                 <a ng-click="deletePhoto(photo.id)">
                     <button class="del-image pull-right btn btn-xs btn-danger">Delete</button>
                 </a>

@@ -3,7 +3,9 @@
         <div>
             <div class="form-group">
                 <label for="photos">Photos</label>
-                <input type="file" accept = "image/*" file-model="myFile"/>
+                <form>
+                    <input type="file" accept="image/*" ng-model="myFile" multiple base-sixty-four-input/>
+                </form>
             </div>
             <button ng-click="submit()">Submit</button>
         </div>

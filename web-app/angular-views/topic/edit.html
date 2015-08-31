@@ -1,11 +1,11 @@
-<div class="row" ng-controller="editTopicController" ng-hide="isOnline">
+<div class="row" ng-controller="editController" ng-hide="isOnline">
     <div class="col-xs-6 col-xs-offset-3">
         <div>
             <div class = "form-group">
                 <label for="topicName">Topic Name</label>
                 <input type="text" class="form-control" ng-model="topicName"/>
             </div>
-            <button ng-click="uploadFile()">Confirm</button>
+            <button ng-click="edit()">Confirm</button>
         </div>
     </div>
 </div>

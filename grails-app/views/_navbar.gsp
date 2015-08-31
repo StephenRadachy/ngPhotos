@@ -11,10 +11,15 @@
         </div>
 
         <div id = "navbar" class = "collapse navbar-collapse">
-            <ul class = "nav navbar-nav">                    
+            <ul class = "nav navbar-nav grails">                    
                 <!-- Links go here for the pages -->
                 <li><a href = "/myphotos/topic/create">Create a Topic</a></li>
                 <li><a href = "/myphotos/topic">View Topics</a></li>
+            </ul>
+            <ul class = "nav navbar-nav angular">                    
+                <!-- Links go here for the pages -->
+                <li><a href = "/myphotos/topic/#/create">Create a Topic</a></li>
+                <li><a href = "/myphotos/topic/#">View Topics</a></li>
             </ul>
         </div> <!-- collapse -->
     </div> <!-- container-fluid -->

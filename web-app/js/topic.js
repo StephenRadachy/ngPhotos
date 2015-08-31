@@ -12,7 +12,7 @@
             // see: https://docs.angularjs.org/api/ng/type/$rootScope.Scope
 
             //used for hiding angular dom elements while online
-            $rootScope.isOnline = false;//online;
+            $rootScope.isOnline = online;
         });
 
 
@@ -25,9 +25,10 @@
                 var topics = db.createObjectStore('topics', {keyPath: 'id'});
                 topics.createIndex('name_idx', 'name', {unique: false});
 
-                var photos = db.createObjectStore('photos', {keyPath: 'id'});
-                photos.createIndex('content_idx', 'content', {unique: false});
+                var photos = db.createObjectStore('photos', {keyPath: 'id', autoIncrement: true});
                 photos.createIndex('topicID_idx', 'topicID', {unique: false});
+                photos.createIndex('filetype_idx', 'filetype', {unique: false});
+                photos.createIndex('content_idx', 'content', {unique: false});
             });
 
 
@@ -35,31 +36,31 @@
 
         // list of topics
         $routeProvider.when('/', {
-                templateUrl : 'angular-views/topic/index.html',
+                templateUrl : '../angular-views/topic/index.html',
                 controller  : 'indexController'
             })
 
             // create topic page
             .when('/create',{
-                templateUrl : 'angular-views/topic/create.html',
+                templateUrl : '../angular-views/topic/create.html',
                 controller  : 'createController'
             })
 
             // view photos in a topic
             .when('/view/:id', {
-                templateUrl : 'angular-views/topic/view.html',
+                templateUrl : '../angular-views/topic/view.html',
                 controller  : 'viewController'
             })
 
             // edit a topic
             .when('/edit/:id', {
-                templateUrl : 'angular-views/topic/edit.html',
+                templateUrl : '../angular-views/topic/edit.html',
                 controller  : 'editController'
             })
 
             // add a new photo to a topic
             .when('/addPhotos/:id', {
-                templateUrl : 'angular-views/topic/addPhotos.html',
+                templateUrl : '../angular-views/topic/addPhotos.html',
                 controller  : 'addPhotosController'
             })
 
@@ -75,91 +76,141 @@
 
     // list of topics
     app.controller("indexController",['$scope', '$indexedDB', function($scope, $indexedDB){
+        $scope.noTopics = true;
         // populate topics from indexedDB
+        $indexedDB.openStore('topics', function(e){
+            e.getAll().then(function(topics) {  
+                // Update scope
+                $scope.topics = topics;
+                if (topics.length > 0){
+                    $scope.noTopics = false;
+                }
+            });
+        });
     }]);
 
     // create a new topic
-    app.controller("createController",['$scope', '$indexedDB', function($scope, $indexedDB){
+    app.controller("createController",['$scope', '$indexedDB', '$location', function($scope, $indexedDB, $location){
 
         $scope.create = function(){
+            
+            // get photo(s) data
+            // using naif.base64 module 
+            // see https://github.com/adonespitogo/angular-base64-upload 
             var file = $scope.myFile;
-            console.dir(file);
+            
+            // see util.js
             var topicID = guid();
 
             // create topic in indexedDB
-            // $scope.topicName
-
-
-            // create photo in indexedDB
-            $indexedDB.openStore('photos',function(store) {
-
-                store.insert({"id": guid(), "content": file.base64, "topicID": guid()}).then(function (e) {
-                });
+            $indexedDB.openStore('topics',function(store) {
+                store.insert({"id": topicID, "name": $scope.topicName}).then(function (e) {});
             });
 
+            // create photos in indexedDB
+            for(var j=0; j < file.length; j++){
+                var ft = file[j].filetype;
+                var content = file[j].base64;
+                $indexedDB.openStore('photos',function(store) {
+                    store.insert({"topicID": topicID, "filetype": ft, "content": content}).then(function (e) {});
+                });
+            }
+
             // redirect to index
-            //$location.path("/");
+            $location.path("/");
         };
     }]);
 
     // view a topic
-    app.controller("viewController",['$scope', '$indexedDB', '$routeParams', function($scope, $indexedDB, $routeParams){
+    app.controller("viewController",['$scope', '$indexedDB', '$routeParams', '$location', function($scope, $indexedDB, $routeParams, $location){
         $scope.topicID = $routeParams.id;
-
+        
+        // set topic name
+        $indexedDB.openStore('topics', function(e){
+            e.find($scope.topicID).then(function(topic) {  
+                // Update name
+                $scope.topicName = topic.name;
+            });
+        });
+        
+        // set photos
+        $indexedDB.openStore('photos', function(photos){
+            photos.getAll().then(function(e){
+                $scope.photos = e;
+            });
+        });
+        
+        
         $scope.deletePhoto = function(id){
-            //delete photo from indexedDB
-            //update page
+            $indexedDB.openStore('photos', function(photos){
+                // delete photo
+                photos.delete(id);
+                
+                // update scope
+                photos.getAll().then(function(e){
+                    $scope.photos = e;
+                });
+            });
         };
 
         $scope.deleteTopic = function(){
             // delete all photos from the topic
+            $indexedDB.openStore('photos', function(photos){
+                photos.getAll().then(function(e){
+                    for (var j = 0; j < e.length; j++){
+                        if (e[j].topicID == $scope.topicID){
+                            photos.delete(e[j].id);
+                        }
+                    }
+                });
+            });
+            
             // delete the topic itself from indexedDB
+            $indexedDB.openStore('topics', function(topics){
+                topics.delete($scope.topicID);
+            });
             // redirect to index
-            //$location.path("/");
+            $location.path("/");
         };
     }]);
 
     // edit the name of the topic
-    app.controller("editController",['$scope', '$indexedDB','$routeParams',function($scope, $indexedDB, $routeParams){
+    app.controller("editController",['$scope', '$indexedDB','$routeParams', '$location', function($scope, $indexedDB, $routeParams, $location){
         $scope.topicID = $routeParams.id;
 
-        //update topic name in indexedDB
-        //redirect back to view
-
-        //$location.path("/view/" + $scope.topicID);
+        $scope.edit = function(){
+            //update topic name in indexedDB
+            $indexedDB.openStore('topics',function(store) {
+                store.upsert({"id": $scope.topicID, "name": $scope.topicName}).then(function (e) {});
+            });
+        
+            //redirect back to view
+            $location.path("/view/" + $scope.topicID);
+        };
+        
+        
     }]);
 
     // add a new photo to a topic
-    app.controller("addPhotosController",['$scope', '$indexedDB', '$routeParams', function($scope, $indexedDB, $routeParams){
+    app.controller("addPhotosController",['$scope', '$indexedDB', '$routeParams', '$location', function($scope, $indexedDB, $routeParams, $location){
         $scope.topicID = $routeParams.id;
         $scope.submit = function(id){
+            
+            // get photo(s) data
+            // using naif.base64 module 
+            // see https://github.com/adonespitogo/angular-base64-upload 
             var file = $scope.myFile;
-            console.dir(file);
-
-            $indexedDB.openStore('photos',function(store) {
-
-                store.insert({"id": guid(), "content": file.base64, "topicID": guid()}).then(function (e) {
-                });
-            });
-            //redirect back to view
-            //$location.path("/view/" + $scope.topicID);
-        };
-    }]);
-
-    // handle file upload
-    app.directive('fileModel', ['$parse', function ($parse) {
-        return {
-            restrict: 'A',
-            link: function(scope, element, attrs) {
-                var model = $parse(attrs.fileModel);
-                var modelSetter = model.assign;
-
-                element.bind('change', function(){
-                    scope.$apply(function(){
-                        modelSetter(scope, element[0].files[0]);
-                    });
+            
+            // create photos in indexedDB
+            for(var j=0; j < file.length; j++){
+                var ft = file[j].filetype;
+                var content = file[j].base64;
+                $indexedDB.openStore('photos',function(store) {
+                    store.insert({"topicID": $scope.topicID, "filetype": ft, "content": content}).then(function (e) {});
                 });
             }
+            //redirect back to view
+            $location.path("/view/" + $scope.topicID);
         };
     }]);
 

@@ -1,13 +1,20 @@
-<div ng-controller="homeController" ng-hide="isOnline" class="col-sm-10 col-sm-offset-1">
+<div ng-controller="indexController" ng-hide="isOnline" class="col-sm-10 col-sm-offset-1">
     <h1>Topics Stored Locally</h1>
-    <div class="row">
-        <div ng-repeat="topic in topics" class="col-md-3 col-xs-12">
-            <h3><a ng-href="topic#/view/{{topic.id}}">{{topic.name}}</a></h3>
-            <div style="height: 20%; overflow: hidden">
-                <div class="thumbnail">
-                    <img ng-src="{{(topic.photos|filter:query)[0].content}}">
-                </div>
-            </div>
+    <div class="row"  ng-show="noTopics">
+        <div class="jumbotron">
+            <h1>Nothing here yet!</h1>
+            <p><a ng-href="#/create">Create a Topic</a> to get started!</p>
         </div>
     </div>
+    <div class="row" ng-hide="noTopics">
+        <div ng-repeat="topic in topics" class="col-md-3 col-xs-12">
+            <h3><a ng-href="#/view/{{topic.id}}">{{topic.name}}</a></h3>
+            <!--<div style="height: 20%; overflow: hidden">
+                <div class="thumbnail">
+                    <img ng-src="data:{{topic.photofiletype}};base64,{{topic.photocontent}}">
+                </div>
+            </div>-->
+        </div>
+    </div>
+    
 </div>
