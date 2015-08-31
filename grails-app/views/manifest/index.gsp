@@ -18,11 +18,11 @@ FALLBACK:
 # 'content-online' falls back to 'content-offline'
 ${request.contextPath} ${request.contextPath}/
 ${request.contextPath}/js/online.js ${request.contextPath}/js/offline.js
-${request.contextPath}/topic/create ${request.contextPath}/topic#/create
-${request.contextPath}/topic/addPhotos ${request.contextPath}/topic#/addPhotos
-${request.contextPath}/topic/edit ${request.contextPath}/topic#/edit
-${request.contextPath}/topic/view ${request.contextPath}/topic#/view
-${request.contextPath}/topic/index ${request.contextPath}/topic#/
+${request.contextPath}/topic/create ${request.contextPath}/topic/#/create
+${request.contextPath}/topic/addPhotos ${request.contextPath}/topic/#/addPhotos
+${request.contextPath}/topic/edit ${request.contextPath}/topic/#/edit
+${request.contextPath}/topic/view ${request.contextPath}/topic/#/view
+${request.contextPath}/topic/index ${request.contextPath}/topic/#/
 
 NETWORK:
 *
