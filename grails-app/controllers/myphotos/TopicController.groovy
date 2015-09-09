@@ -12,7 +12,6 @@ class TopicController {
 
         def topic = Topic.get(params.id)
         def model = [topic: topic, photos: topic.photos]
-
         render(view: "view", model: model)
     }
 

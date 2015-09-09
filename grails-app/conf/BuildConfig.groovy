@@ -27,6 +27,10 @@ grails.project.dependency.resolution = {
     inherits("global") {
         // specify dependency exclusions here; for example, uncomment this to disable ehcache:
         // excludes 'ehcache'
+
+        // Stephen - 8/12/15 do not use default H2 and JDBC as they cause issues
+        excludes "tomcat-jdbc"
+        excludes "h2"
     }
     log "error" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     checksums true // Whether to verify checksums on resolve
@@ -51,6 +55,9 @@ grails.project.dependency.resolution = {
         // runtime 'mysql:mysql-connector-java:5.1.29'
         // runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
         test "org.grails:grails-datastore-test-support:1.0.2-grails-2.4"
+
+        runtime "org.apache.tomcat:tomcat-jdbc:7.0.63"
+        runtime "com.h2database:h2:1.4.187"
     }
 
     plugins {

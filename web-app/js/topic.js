@@ -12,7 +12,7 @@
             // see: https://docs.angularjs.org/api/ng/type/$rootScope.Scope
 
             //used for hiding angular dom elements while online
-            $rootScope.isOnline = online;
+            $rootScope.isOnline = false; //online;
         });
 
 
@@ -136,7 +136,17 @@
         // set photos
         $indexedDB.openStore('photos', function(photos){
             photos.getAll().then(function(e){
-                $scope.photos = e;
+
+                // find photos which are apart of the topic
+                var ret = [];
+                for (var j = 0; j < e.length; j++){
+                    if (e[j].topicID == $scope.topicID){
+                        ret.push(e[j]);
+                    }
+                }
+
+                // set in scope
+                $scope.photos = ret;
             });
         });
         

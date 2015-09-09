@@ -30,7 +30,7 @@
                     <div class = "col-xs-12">
                         <div class = "image-container">
                             <img class = "full-image" src = "/myphotos/photo/view/${it.id}" />
-                            <a href = "/myphotos/photo/delete/${it.id}"
+                            <a href ="/myphotos/photo/delete/${it.id}">
                                 <button class = "del-image pull-right btn btn-xs btn-danger">
                                     Delete
                                 </button>

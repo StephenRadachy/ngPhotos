@@ -54,7 +54,7 @@ class TopicCollectionTagLib {
             sb << """
                 <div class = "jumbotron">
                     <h1>Nothing here yet!</h1>
-                    <p><a href = "/myphotos/create">Create a Topic</a> to get started!</p>
+                    <p><a href = "/myphotos/topic/create">Create a Topic</a> to get started!</p>
                 </div>
             """
         }
