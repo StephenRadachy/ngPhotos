@@ -110,7 +110,7 @@
             // build photo array to insert
             var addToPhotos = [];
             for(var j=0; j < file.length; j++){
-                var photo = {"topicID": topicID, "filetype": file[j].filetype, "content": file[j].base64}
+                var photo = {"topicID": topicID, "filetype": file[j].filetype, "content": file[j].base64};
                 addToPhotos.push(photo);
             }
             
