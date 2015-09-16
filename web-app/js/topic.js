@@ -107,14 +107,17 @@
                 store.insert({"id": topicID, "name": $scope.topicName}).then(function (e) {});
             });
 
-            // create photos in indexedDB
+            // build photo array to insert
+            var addToPhotos = [];
             for(var j=0; j < file.length; j++){
-                var ft = file[j].filetype;
-                var content = file[j].base64;
-                $indexedDB.openStore('photos',function(store) {
-                    store.insert({"topicID": topicID, "filetype": ft, "content": content}).then(function (e) {});
-                });
+                var photo = {"topicID": topicID, "filetype": file[j].filetype, "content": file[j].base64}
+                addToPhotos.push(photo);
             }
+            
+            // create photos in indexedDB
+            $indexedDB.openStore('photos',function(store) {
+                store.insert(addToPhotos).then(function(e){});
+            });
 
             // redirect to index
             $location.path("/");
@@ -135,18 +138,15 @@
         
         // set photos
         $indexedDB.openStore('photos', function(photos){
-            photos.getAll().then(function(e){
-
-                // find photos which are apart of the topic
-                var ret = [];
-                for (var j = 0; j < e.length; j++){
-                    if (e[j].topicID == $scope.topicID){
-                        ret.push(e[j]);
-                    }
-                }
-
-                // set in scope
-                $scope.photos = ret;
+            
+            // build query
+            var find = photos.query();
+            find = find.$eq($scope.topicID);
+            find = find.$index("topicID_idx");
+            
+            // update scope
+            photos.eachWhere(find).then(function(e){
+                $scope.photos = e;
             });
         });
         
@@ -156,8 +156,13 @@
                 // delete photo
                 photos.delete(id);
                 
+                // build query
+                var find = photos.query();
+                find = find.$eq($scope.topicID);
+                find = find.$index("topicID_idx");
+                
                 // update scope
-                photos.getAll().then(function(e){
+                photos.eachWhere(find).then(function(e){
                     $scope.photos = e;
                 });
             });
@@ -201,7 +206,7 @@
         
     }]);
 
-    // add a new photo to a topic
+    // add photos to a topic
     app.controller("addPhotosController",['$scope', '$indexedDB', '$routeParams', '$location', function($scope, $indexedDB, $routeParams, $location){
         $scope.topicID = $routeParams.id;
         $scope.submit = function(id){
@@ -210,15 +215,19 @@
             // using naif.base64 module 
             // see https://github.com/adonespitogo/angular-base64-upload 
             var file = $scope.myFile;
+
+            // build photo array to insert
+            var addToPhotos = [];
+            for(var j=0; j < file.length; j++){
+                var photo = {"topicID": $scope.topicID, "filetype": file[j].filetype, "content": file[j].base64}
+                addToPhotos.push(photo);
+            }
             
             // create photos in indexedDB
-            for(var j=0; j < file.length; j++){
-                var ft = file[j].filetype;
-                var content = file[j].base64;
-                $indexedDB.openStore('photos',function(store) {
-                    store.insert({"topicID": $scope.topicID, "filetype": ft, "content": content}).then(function (e) {});
-                });
-            }
+            $indexedDB.openStore('photos',function(store) {
+                store.insert(addToPhotos).then(function(e){});
+            });
+            
             //redirect back to view
             $location.path("/view/" + $scope.topicID);
         };
