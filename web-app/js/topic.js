@@ -23,12 +23,9 @@
             .connection('myPhotos')
             .upgradeDatabase(1, function(event, db, tx){
                 var topics = db.createObjectStore('topics', {keyPath: 'id'});
-                topics.createIndex('name_idx', 'name', {unique: false});
 
                 var photos = db.createObjectStore('photos', {keyPath: 'id', autoIncrement: true});
                 photos.createIndex('topicID_idx', 'topicID', {unique: false});
-                photos.createIndex('filetype_idx', 'filetype', {unique: false});
-                photos.createIndex('content_idx', 'content', {unique: false});
             });
 
 
