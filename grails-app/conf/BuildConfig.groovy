@@ -54,23 +54,30 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
         // runtime 'mysql:mysql-connector-java:5.1.29'
         // runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
-        test "org.grails:grails-datastore-test-support:1.0.2-grails-2.4"
+        // Stephen;6/6/15; added for automated deployment
+        runtime "com.jcraft:jsch:0.1.52"
+        runtime "org.apache.ant:ant-jsch:1.9.4"
 
+        // Stephen 8/12/15 - use latest JDBC and H2 versions
+        // H2 see: https://github.com/grails/grails-core/issues/700
+        // JDBC: I saw a webpage that suggested to upgrade to the
+        // latest version to resolve issues; I can't find it as of
+        // right now.
         runtime "org.apache.tomcat:tomcat-jdbc:7.0.63"
         runtime "com.h2database:h2:1.4.187"
     }
 
     plugins {
         // plugins for the build system only
-        build ":tomcat:7.0.55"
+        build ":tomcat:7.0.55.2" // or ":tomcat:8.0.20"
 
         // plugins for the compile step
         compile ":scaffolding:2.1.2"
         compile ':cache:1.1.8'
-        compile ":asset-pipeline:1.9.9"
+        compile ":asset-pipeline:2.3.9"
 
         // plugins needed at runtime but not for compilation
-        runtime ":hibernate4:4.3.6.1" // or ":hibernate:3.6.10.18"
+        runtime ":hibernate4:4.3.8.1" // or ":hibernate:3.6.10.18"
         runtime ":database-migration:1.4.0"
         runtime ":jquery:1.11.1"
 

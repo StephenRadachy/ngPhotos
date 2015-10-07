@@ -1,5 +1,5 @@
 package myphotos
-
+import grails.converters.JSON
 class TopicController {
     
     def index() {
@@ -84,4 +84,26 @@ class TopicController {
 
         return redirect(controller: "topic", action: "view", params: [id: topic.id])
     }
+    
+    // This method is the endpoint to process forms from the
+    // submitTopic action for offline topics.  This method
+    // is similar to createTopic in the online topic controller
+    // (TopicController.groovy) in that the same action is
+    // performed.  The topic and photo data is sent to this action
+    // in a slightly different way, however, so both methods must exist.
+    def submitOfflineTopic() {
+        def topic = new Topic(name: params.topicName)
+        
+        for (int i = 0; i < params.photos.toInteger(); i++) {
+            topic.addToPhotos(new Photo(data: params["photo" + i]))
+        }
+        topic.save(flush: true)
+    
+        def response = [
+            'result': 'success',
+        ]
+
+        render response as JSON
+    }
+
 }

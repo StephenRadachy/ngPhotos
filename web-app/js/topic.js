@@ -122,7 +122,7 @@
     }]);
 
     // view a topic
-    app.controller("viewController",['$scope', '$indexedDB', '$routeParams', '$location', function($scope, $indexedDB, $routeParams, $location){
+    app.controller("viewController",['$scope', '$indexedDB', '$routeParams', '$location', '$http', function($scope, $indexedDB, $routeParams, $location, $http){
         $scope.topicID = $routeParams.id;
         
         // set topic name
@@ -183,6 +183,70 @@
             });
             // redirect to index
             $location.path("/");
+        };
+        
+        
+        $scope.submitTopic = function(){
+            //make http request for topic submission
+            // use this notation <<<<<<<<<< photos1, photos2
+            
+            /*var submitdata = {};
+            console.log("test");
+            submitdata['topicName'] = $scope.topicName;*/
+
+            $indexedDB.openStore('photos', function(photos){
+                
+                // build query
+                var find = photos.query();
+                find = find.$eq($scope.topicID);
+                find = find.$index("topicID_idx");
+                
+                // update scope
+                photos.eachWhere(find).then(function(e){
+                    var fd = new FormData();
+                    fd.append("topicName", $scope.topicName);
+                    
+                    fd.append("photos", e.length);
+                    console.log("length: " + e.length);
+                    
+                    for (var j=1; j <= e.length; j++){
+                        if (typeof e[j] !== 'undefined'){
+                            console.log(e[j].content);
+                            fd.append("photos" + j, window.atob(e[j].content));
+                        }
+                    }
+                    
+                    console.log(fd); 
+                    $.ajax({
+                        type: "POST",
+                        url: "/myphotos/Topic/submitTopic",
+                        data: fd,
+                        processData: false,
+                        contentType: false
+                    }).done(function() {
+                        // delete the topic from indexedDB
+                    
+                        // delete all photos from the topic
+                        $indexedDB.openStore('photos', function(photos){
+                            photos.getAll().then(function(e){
+                                for (var j = 0; j < e.length; j++){
+                                    if (e[j].topicID == $scope.topicID){
+                                        photos.delete(e[j].id);
+                                    }
+                                }
+                            });
+                        });
+                        
+                        // delete the topic itself from indexedDB
+                        $indexedDB.openStore('topics', function(topics){
+                            topics.delete($scope.topicID);
+                        });
+                        
+                        // redirect to index
+                        $location.path("/");
+                    });
+                });
+            });
         };
     }]);
 

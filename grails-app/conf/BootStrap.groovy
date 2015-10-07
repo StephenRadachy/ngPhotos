@@ -6,7 +6,7 @@ import myphotos.Photo
 class BootStrap {
 
     def init = { servletContext ->
-        def folder = System.getProperty("user.home") + "/albums"
+        def folder = ${request.contextPath} + "/albums"
         def dir = new File(folder)
 
         if (dir.exists()) {
