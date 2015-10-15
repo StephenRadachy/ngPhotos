@@ -211,21 +211,21 @@
                     
                     for (var j=1; j <= e.length; j++){
                         if (typeof e[j] !== 'undefined'){
-                            console.log(e[j].content);
-                            fd.append("photos" + j, window.atob(e[j].content));
+                            //console.log(window.atob(e[j].content));
+                            fd.append("photo" + j, window.atob(e[j].content));
                         }
                     }
                     
-                    console.log(fd); 
+                    //console.log(fd); 
                     $.ajax({
                         type: "POST",
-                        url: "/myphotos/Topic/submitTopic",
+                        url: "/myphotos/Topic/submitOfflineTopic",
                         data: fd,
                         processData: false,
                         contentType: false
-                    }).done(function() {
+                    }).done(function(e) {
                         // delete the topic from indexedDB
-                    
+                        console.log(e);
                         // delete all photos from the topic
                         $indexedDB.openStore('photos', function(photos){
                             photos.getAll().then(function(e){

@@ -3,7 +3,7 @@
     <head>
         <title>myPhotos - Topics</title>
         <meta name = "layout" content = "topic">
-        <g:external dir="js" file="topic.js"/>
+        <script src="js/topic.js"></script>
     </head>
     <body>
         <div ng-app="topic" class = "container-fluid grails">

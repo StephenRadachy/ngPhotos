@@ -74,6 +74,7 @@ class TopicController {
         def topic = new Topic(name: params.topicName)
 
         List fileList = request.getFiles("photos")
+        print(fileList.size())
         fileList.each { file ->
             if (!file.isEmpty()) {
                 def photo = new Photo(data: file.getBytes())
@@ -93,11 +94,15 @@ class TopicController {
     // in a slightly different way, however, so both methods must exist.
     def submitOfflineTopic() {
         def topic = new Topic(name: params.topicName)
-        
-        for (int i = 0; i < params.photos.toInteger(); i++) {
-            topic.addToPhotos(new Photo(data: params["photo" + i]))
-        }
         topic.save(flush: true)
+        print(params.photos.toInteger())
+        for (int i = 0; i < params.photos.toInteger(); i++) {
+            def dat = new Photo(data: params["photo" + i])
+            dat.save(flush:true)
+            topic.addToPhotos(dat)
+            topic.save(flush: true)
+        }
+        
     
         def response = [
             'result': 'success',

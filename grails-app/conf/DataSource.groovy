@@ -54,5 +54,4 @@ environments {
             }
         }
     }
-    dialect = "org.hibernate.dialect.H2Dialect"
 }
