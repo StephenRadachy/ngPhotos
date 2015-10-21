@@ -1,6 +1,5 @@
 package myphotos
 import grails.converters.JSON
-import myphotos.utils
 class TopicController {
     
     def index() {
