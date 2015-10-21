@@ -72,8 +72,19 @@
     // $scope references this specific controller
 
     // list of topics
-    app.controller("indexController",['$scope', '$indexedDB', function($scope, $indexedDB){
+    app.controller("indexController",['$scope', '$indexedDB','$http', function($scope, $indexedDB, $http){
+        
         $scope.noTopics = true;
+        $scope.noServerTopics = true;
+        
+        $http.get("/myphotos/Topic/getTopics").success(function(response) {
+            $scope.serverTopics = response;
+            
+            if (response.length > 0){
+                $scope.noServerTopics = false;
+            }
+        });
+        
         // populate topics from indexedDB
         $indexedDB.openStore('topics', function(e){
             e.getAll().then(function(topics) {  
@@ -209,10 +220,12 @@
                     fd.append("photos", e.length);
                     console.log("length: " + e.length);
                     
-                    for (var j=1; j <= e.length; j++){
+                    for (var j=0; j < e.length; j++){
                         if (typeof e[j] !== 'undefined'){
+                            //console.log("photo" + j + "\n\n\n\n\n\n\n\n\n\n\n\n\n");
                             //console.log(window.atob(e[j].content));
-                            fd.append("photo" + j, window.atob(e[j].content));
+                            //fd.append("photo" + j, window.atob(e[j].content));
+                            fd.append("photo" + j, e[j].content);
                         }
                     }
                     

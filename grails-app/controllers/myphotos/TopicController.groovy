@@ -1,5 +1,6 @@
 package myphotos
 import grails.converters.JSON
+import myphotos.utils
 class TopicController {
     
     def index() {
@@ -13,6 +14,10 @@ class TopicController {
         def topic = Topic.get(params.id)
         def model = [topic: topic, photos: topic.photos]
         render(view: "view", model: model)
+    }
+    
+    def getTopics() {
+        render Topic.list() as JSON
     }
 
     def addPhotos() {
@@ -59,7 +64,7 @@ class TopicController {
     def delete() {
 
         Topic.get(params.id).delete(flush: true)
-        return redirect(uri: "/")
+        return redirect(view: "index")
     }
 
     def create() {
@@ -94,15 +99,14 @@ class TopicController {
     // in a slightly different way, however, so both methods must exist.
     def submitOfflineTopic() {
         def topic = new Topic(name: params.topicName)
-        topic.save(flush: true)
-        print(params.photos.toInteger())
+
         for (int i = 0; i < params.photos.toInteger(); i++) {
-            def dat = new Photo(data: params["photo" + i])
-            dat.save(flush:true)
-            topic.addToPhotos(dat)
-            topic.save(flush: true)
+            if (params["photo" + i] != null){
+                def dat = new Photo(data: params["photo" + i].decodeBase64())
+                topic.addToPhotos(dat)
+            }
         }
-        
+        topic.save(flush: true)
     
         def response = [
             'result': 'success',
