@@ -12,7 +12,7 @@
             // see: https://docs.angularjs.org/api/ng/type/$rootScope.Scope
 
             //used for hiding angular dom elements while online
-            $rootScope.isOnline = false; //online;
+            $rootScope.isOnline = online;
         });
 
 
@@ -72,25 +72,28 @@
     // $scope references this specific controller
 
     // list of topics
-    app.controller("indexController",['$scope', '$indexedDB','$http', function($scope, $indexedDB, $http){
-        
+    app.controller("indexController",['$scope', '$indexedDB','$http','$rootScope', function($scope, $indexedDB, $http, $rootScope){
+        $scope.isOnline = $rootScope.isOnline;
         $scope.noTopics = true;
         $scope.noServerTopics = true;
         
-        $http.get("/myphotos/Topic/getTopics").success(function(response) {
+        if ($rootScope.isOnline){
+            $http.get("/myphotos/Topic/getTopics").success(function(response) {
             $scope.serverTopics = response;
             
             if (response.length > 0){
                 $scope.noServerTopics = false;
             }
         });
+        }
+        
         
         // populate topics from indexedDB
         $indexedDB.openStore('topics', function(e){
             e.getAll().then(function(topics) {  
                 // Update scope
                 $scope.topics = topics;
-                if (topics.length > 0){
+                if (topics.length > 0 || !$rootScope.isOnline){
                     $scope.noTopics = false;
                 }
             });
@@ -198,12 +201,6 @@
         
         
         $scope.submitTopic = function(){
-            //make http request for topic submission
-            // use this notation <<<<<<<<<< photos1, photos2
-            
-            /*var submitdata = {};
-            console.log("test");
-            submitdata['topicName'] = $scope.topicName;*/
 
             $indexedDB.openStore('photos', function(photos){
                 
@@ -222,9 +219,6 @@
                     
                     for (var j=0; j < e.length; j++){
                         if (typeof e[j] !== 'undefined'){
-                            //console.log("photo" + j + "\n\n\n\n\n\n\n\n\n\n\n\n\n");
-                            //console.log(window.atob(e[j].content));
-                            //fd.append("photo" + j, window.atob(e[j].content));
                             fd.append("photo" + j, e[j].content);
                         }
                     }

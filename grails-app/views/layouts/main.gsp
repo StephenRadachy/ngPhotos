@@ -15,7 +15,7 @@
         <g:layoutBody/>
         <br /><br /> <!-- Add some whitespace at the bottom -->
         <script>
-        // toggles grails elements depending on the online status
+        // hides angular menu items
         $( document ).ready(function() {
             $(".angular").hide();
         });

@@ -6,7 +6,7 @@
         <g:external dir="js" file="topic.js"/>
     </head>
     <body>
-        <div ng-app="topic" class = "container-fluid grails">
+        <div ng-app="topic" class = "container-fluid">
             <div ng-view></div>
         </div> <!-- Container -->
     </body>

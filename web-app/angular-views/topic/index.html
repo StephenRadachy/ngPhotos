@@ -1,19 +1,19 @@
-<div ng-hide="isOnline" class="col-sm-10 col-sm-offset-1">
-    <h1>Topics Stored On Server</h1>
-    <div class="row"  ng-show="noServerTopics">
+<div class="col-sm-10 col-sm-offset-1">
+    <h1 ng-show="isOnline">Topics Stored On Server</h1>
+    <div class="row"  ng-show="isOnline && noServerTopics">
         <div class="jumbotron">
             <h1>Nothing here yet!</h1>
             <p><a href="create">Create a Topic</a> to get started!</p>
         </div>
     </div>
-    <div class="row" ng-hide="noServerTopics">
+    <div class="row" ng-hide="!isOnline || noServerTopics">
         <div ng-repeat="topic in serverTopics" class="col-md-3 col-xs-12">
             <h3><a href="view/{{topic.id}}">{{topic.name}}</a></h3>
         </div>
     </div>
     
-    <h1>Topics Stored Locally</h1>
-    <div class="row"  ng-show="noTopics">
+    <h1 ng-hide="isOnline && noTopics">Topics Stored Locally</h1>
+    <div class="row"  ng-show="!isOnline && noTopics">
         <div class="jumbotron">
             <h1>Nothing here yet!</h1>
             <p><a ng-href="#/create">Create a Topic</a> to get started!</p>
