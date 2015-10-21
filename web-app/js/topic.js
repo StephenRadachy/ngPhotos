@@ -78,7 +78,7 @@
         $scope.noServerTopics = true;
         
         if ($rootScope.isOnline){
-            $http.get("/myphotos/Topic/getTopics").success(function(response) {
+            $http.get(contextPath + "/Topic/getTopics").success(function(response) {
             $scope.serverTopics = response;
             
             if (response.length > 0){
