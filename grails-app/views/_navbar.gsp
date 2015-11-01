@@ -7,7 +7,7 @@
                 <span class = "icon-bar"></span>
                 <span class = "icon-bar"></span>
             </button>
-            <a class = "navbar-brand" href = "${request.contextPath}">myPhotos</a>
+            <a class = "navbar-brand" href = "${request.contextPath}">ngPhotos</a>
         </div>
 
         <div id = "navbar" class = "collapse navbar-collapse">

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>myPhotos - Create a Topic</title>
+        <title>ngPhotos - Create a Topic</title>
         <meta name = "layout" content = "main">
     </head>
     <body>

@@ -1,6 +1,6 @@
-package myphotos 
+package ngphotos 
 
-import myphotos.Photo
+import ngphotos.Photo
 
 class Topic {
     static hasMany = [photos: Photo]

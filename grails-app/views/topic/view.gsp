@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>myPhotos - ${topic.name}</title>
+        <title>ngPhotos - ${topic.name}</title>
         <meta name = "layout" content = "main">
         <asset:stylesheet href = "style.css" />
     </head>
@@ -12,13 +12,13 @@
 
                 <div class = "col-xs-12">
                     <div style = "margin-top: 25px;">
-                        <a class = "btnlink" href = "/myphotos/topic/addPhotos/${topic.id}">
+                        <a class = "btnlink" href = "${request.contextPath}/topic/addPhotos/${topic.id}">
                             <button class = "btn-sm btn">Add Photos</button>
                         </a>
-                        <a class = "btnlink" href = "/myphotos/topic/edit/${topic.id}">
+                        <a class = "btnlink" href = "${request.contextPath}/topic/edit/${topic.id}">
                             <button class = "btn-sm btn">Edit Topic</button>
                         </a>
-                        <a class = "btnlink" href = "/myphotos/topic/delete/${topic.id}">
+                        <a class = "btnlink" href = "${request.contextPath}/topic/delete/${topic.id}">
                             <button class = "btn-sm btn btn-danger">Delete Topic</button>
                         </a>
                     </div>
@@ -29,8 +29,8 @@
                 <div class = "row">
                     <div class = "col-xs-12">
                         <div class = "image-container">
-                            <img class = "full-image" src = "/myphotos/photo/view/${it.id}" />
-                            <a href ="/myphotos/photo/delete/${it.id}">
+                            <img class = "full-image" src = "${request.contextPath}/photo/view/${it.id}" />
+                            <a href ="${request.contextPath}/photo/delete/${it.id}">
                                 <button class = "del-image pull-right btn btn-xs btn-danger">
                                     Delete
                                 </button>

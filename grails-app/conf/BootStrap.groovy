@@ -1,7 +1,5 @@
-import groovy.io.FileType
-
-import myphotos.Topic
-import myphotos.Photo
+import ngphotos.Topic
+import ngphotos.Photo
 
 class BootStrap {
 

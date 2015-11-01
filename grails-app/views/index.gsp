@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>myPhotos</title>
+        <title>ngPhotos</title>
         <meta name = "layout" content = "main">
     </head>
     <body>
         <div class = "container-fluid">
             <div class = "col-sm-10 col-sm-offset-1" style = "text-align: center">
-                <h1 style = "font-size: 96px">myPhotos</h1>
+                <h1 style = "font-size: 96px">ngPhotos</h1>
                 <p style = "font-size: 36px">Store all your photos neatly organized by topic.</p>
             </div>
 

@@ -1,6 +1,6 @@
-package myphotos 
+package ngphotos 
 
-import myphotos.Topic
+import ngphotos.Topic
 
 class Photo {
     static belongsTo = [topic: Topic]

@@ -12,7 +12,7 @@
             // see: https://docs.angularjs.org/api/ng/type/$rootScope.Scope
 
             //used for hiding angular dom elements while online
-            $rootScope.isOnline = online;
+            $rootScope.isOnline = true;//online;
         });
 
 
@@ -93,7 +93,7 @@
             e.getAll().then(function(topics) {  
                 // Update scope
                 $scope.topics = topics;
-                if (topics.length > 0 || !$rootScope.isOnline){
+                if (topics.length > 0){
                     $scope.noTopics = false;
                 }
             });
@@ -108,7 +108,7 @@
             // get photo(s) data
             // using naif.base64 module 
             // see https://github.com/adonespitogo/angular-base64-upload 
-            var file = $scope.myFile;
+            var file = $scope.uploadPhotos;
             
             // see util.js
             var topicID = guid();
@@ -136,7 +136,7 @@
     }]);
 
     // view a topic
-    app.controller("viewController",['$scope', '$indexedDB', '$routeParams', '$location', '$http', function($scope, $indexedDB, $routeParams, $location, $http){
+    app.controller("viewController",['$scope', '$indexedDB', '$routeParams', '$location', function($scope, $indexedDB, $routeParams, $location){
         $scope.topicID = $routeParams.id;
         
         // set topic name
@@ -152,8 +152,7 @@
             
             // build query
             var find = photos.query();
-            find = find.$eq($scope.topicID);
-            find = find.$index("topicID_idx");
+            find = find.$index("topicID_idx").$eq($scope.topicID);
             
             // update scope
             photos.eachWhere(find).then(function(e){
@@ -169,8 +168,7 @@
                 
                 // build query
                 var find = photos.query();
-                find = find.$eq($scope.topicID);
-                find = find.$index("topicID_idx");
+                find = find.$index("topicID_idx").$eq($scope.topicID);
                 
                 // update scope
                 photos.eachWhere(find).then(function(e){
@@ -206,16 +204,13 @@
                 
                 // build query
                 var find = photos.query();
-                find = find.$eq($scope.topicID);
-                find = find.$index("topicID_idx");
+                find = find.$index("topicID_idx").$eq($scope.topicID);
                 
                 // update scope
                 photos.eachWhere(find).then(function(e){
                     var fd = new FormData();
                     fd.append("topicName", $scope.topicName);
-                    
                     fd.append("photos", e.length);
-                    console.log("length: " + e.length);
                     
                     for (var j=0; j < e.length; j++){
                         if (typeof e[j] !== 'undefined'){
@@ -223,16 +218,13 @@
                         }
                     }
                     
-                    //console.log(fd); 
                     $.ajax({
                         type: "POST",
-                        url: "/myphotos/Topic/submitOfflineTopic",
+                        url: contextPath + "/Topic/submitOfflineTopic",
                         data: fd,
                         processData: false,
                         contentType: false
                     }).done(function(e) {
-                        // delete the topic from indexedDB
-                        console.log(e);
                         // delete all photos from the topic
                         $indexedDB.openStore('photos', function(photos){
                             photos.getAll().then(function(e){
@@ -282,7 +274,7 @@
             // get photo(s) data
             // using naif.base64 module 
             // see https://github.com/adonespitogo/angular-base64-upload 
-            var file = $scope.myFile;
+            var file = $scope.uploadPhotos;
 
             // build photo array to insert
             var addToPhotos = [];

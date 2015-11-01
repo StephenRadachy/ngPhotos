@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>myPhotos - Upload pictures to ${topic.name}</title>
+        <title>ngPhotos - Upload pictures to ${topic.name}</title>
         <meta name = "layout" content = "main">
     </head>
     <body>

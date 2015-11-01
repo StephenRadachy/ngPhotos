@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>myPhotos - Topics</title>
+        <title>ngPhotos - Topics</title>
         <meta name = "layout" content = "topic">
         <g:external dir="js" file="topic.js"/>
 	<script>

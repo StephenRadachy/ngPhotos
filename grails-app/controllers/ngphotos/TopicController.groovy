@@ -1,4 +1,4 @@
-package myphotos
+package ngphotos
 import grails.converters.JSON
 class TopicController {
     

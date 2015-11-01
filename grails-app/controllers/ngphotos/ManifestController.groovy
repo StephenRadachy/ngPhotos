@@ -1,4 +1,4 @@
-package myphotos
+package ngphotos
 
 class ManifestController {
     def index = {

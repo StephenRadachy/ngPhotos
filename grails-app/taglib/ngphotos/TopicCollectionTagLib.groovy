@@ -1,7 +1,7 @@
-package myphotos
+package ngphotos
 
-import myphotos.Topic
-import myphotos.Photo
+import ngphotos.Topic
+import ngphotos.Photo
 
 class TopicCollectionTagLib {
     static namespace = "mp"
@@ -29,13 +29,13 @@ class TopicCollectionTagLib {
 
                     def photoSrc = ""
                     if (topic.photos.asBoolean())
-                        photoSrc = "/myphotos/photo/view/" + topic.photos.first().id
+                        photoSrc = "${request.contextPath}/photo/view/" + topic.photos.first().id
                     else
                         photoSrc = "http://placehold.it/350x350"
 
                     def imageTemplate = """
                         <div class = "col-md-3 col-xs-12">
-                            <h3><a href = "/myphotos/topic/view/${topicId}">${caption}</a></h3>
+                            <h3><a href = "${request.contextPath}/topic/view/${topicId}">${caption}</a></h3>
                             <div style = "height: 20%; overflow: hidden">
                                 <div class = "thumbnail">
                                     <img src = "${photoSrc}" />
@@ -54,7 +54,7 @@ class TopicCollectionTagLib {
             sb << """
                 <div class = "jumbotron">
                     <h1>Nothing here yet!</h1>
-                    <p><a href = "/myphotos/topic/create">Create a Topic</a> to get started!</p>
+                    <p><a href = "${request.contextPath}/topic/create">Create a Topic</a> to get started!</p>
                 </div>
             """
         }
