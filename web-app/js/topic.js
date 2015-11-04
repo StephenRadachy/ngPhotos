@@ -12,7 +12,7 @@
             // see: https://docs.angularjs.org/api/ng/type/$rootScope.Scope
 
             //used for hiding angular dom elements while online
-            $rootScope.isOnline = true;//online;
+            $rootScope.isOnline = online;
         });
 
 
@@ -20,7 +20,7 @@
 
         // indexedDB provider configuration
         $indexedDBProvider
-            .connection('myPhotos')
+            .connection('ngPhotos')
             .upgradeDatabase(1, function(event, db, tx){
                 var topics = db.createObjectStore('topics', {keyPath: 'id'});
 
@@ -74,9 +74,12 @@
     // list of topics
     app.controller("indexController",['$scope', '$indexedDB','$http','$rootScope', function($scope, $indexedDB, $http, $rootScope){
         $scope.isOnline = $rootScope.isOnline;
+
+	// for toggling Angular content when online or offline
         $scope.noTopics = true;
         $scope.noServerTopics = true;
         
+	// get the JSON for the Grails "online" server topics
         if ($rootScope.isOnline){
             $http.get(contextPath + "/Topic/getTopics").success(function(response) {
             $scope.serverTopics = response;
