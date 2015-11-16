@@ -26,7 +26,6 @@ reated by https://www.gitignore.io
 
 # plugin release files
 /*.zip
-!online-snapshot-complete.zip
 /plugin.xml
 
 # older plugin install locations
@@ -39,3 +38,40 @@ reated by https://www.gitignore.io
 # IntelliJ stuff
 /.idea/
 *.iml
+
+# OS Files
+# - Windows
+Desktop.ini
+Thumbs.db
+ehthumbs.db
+
+# - Linux
+.directory
+.Trash-*
+
+# - OS X
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
