@@ -38,7 +38,7 @@ It’s important to note that Angular has access to globals (and it is possible)
 
 
 ###There are four major portions to the ngPhotos application (nearly all Angular code is within and relative to the web-app folder)
-* ####“Model” / IndexedDB
+* **“Model” / IndexedDB**
       * Pulled off using Angular-IndexedDB + Base64 Upload module
       * Code located in web-app/js/topic.js within each controller to make basic calls to insert, delete, etc.
       * See https://github.com/bramski/angular-indexedDB and https://github.com/adonespitogo/angular-base64-upload for documentation
@@ -46,16 +46,16 @@ It’s important to note that Angular has access to globals (and it is possible)
       * See web-app/js/util.js for information about guid generation
       * Each topic has a TopicID which is referenced in each photo that belongs to a specific topic. This is a top-down approach.
       * Photos are stored as Base64 strings
-* ####Views / routes
+* **Views / routes**
       * Route configuration is located in web-app/js/topic.js
          * each route specifies an angular html template and controller to reference.
          * One route per required view
       * Angular templates are located in angular-views/topic
          * One template per required view
-* ####Controllers
+* **Controllers**
       * Code located in web-app/js/topic.js
       * Note that any angular providers you want to reference within the controller must be injected into the controller definition
-* ####Additional  required non-Angular pieces
+* **Additional  required non-Angular pieces**
       * JS includes
          * see grails-app/views/layouts/topic.gsp
          * This layout is only for topic controller grails views
